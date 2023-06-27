@@ -7,16 +7,26 @@ public class Player : MonoBehaviour
 {
 
     Rigidbody2D myRigidBody;
+    LineRenderer myLineRenderer;
 
     bool newPress = false;
     bool isPressed = false;
-    Vector3 pressPosition;
-    Vector3 releasePosition;
+    Vector3 pressPosition = Vector2.zero;
+    Vector3 releasePosition = Vector2.zero;
     Camera mainCamera;
 
     private void Start() {
         myRigidBody = GetComponent<Rigidbody2D>();
+        myLineRenderer = GetComponent<LineRenderer>();
         mainCamera = Camera.main;
+    }
+
+    private void Update() {
+        if(isPressed) {
+            myLineRenderer.positionCount = 2;
+            myLineRenderer.SetPosition(0, releasePosition);
+            myLineRenderer.SetPosition(1, pressPosition);
+        }
     }
 
 
@@ -27,6 +37,7 @@ public class Player : MonoBehaviour
         } else {
             isPressed = false;
             newPress = true;
+            RemoveLine();
             MovePlayer();
         }
     }
@@ -49,6 +60,10 @@ public class Player : MonoBehaviour
             }
         }
         
+    }
+
+    void RemoveLine() {
+        myLineRenderer.positionCount = 0;
     }
 
     void MovePlayer() {

@@ -6,9 +6,11 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
 
+    [SerializeField] TimeManager timeManager;
+
     Rigidbody2D myRigidBody;
     LineRenderer myLineRenderer;
-
+    
     bool newPress = false;
     bool isPressed = false;
     Vector3 pressPosition = Vector2.zero;
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
     }
 
     void MovePlayer() {
+        timeManager.OnPlayerLaunched();
         Vector3 distance = pressPosition - releasePosition;
         print("Distance of drag = " + distance);
         myRigidBody.AddForce(distance, ForceMode2D.Impulse);

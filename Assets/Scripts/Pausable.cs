@@ -8,6 +8,7 @@ public class Pausable : MonoBehaviour
     [SerializeField] TimeManager timeManager;
 
     Rigidbody2D myRigidBody;
+    Rotating rotating;
 
     private float originalGravityScale;
 
@@ -15,6 +16,8 @@ public class Pausable : MonoBehaviour
     void Start()
     {
         myRigidBody = GetComponent<Rigidbody2D>();
+        rotating = GetComponent<Rotating>();
+
         originalGravityScale = myRigidBody.gravityScale;
 
         if(timeManager == null) {
@@ -41,11 +44,18 @@ public class Pausable : MonoBehaviour
         //myRigidBody.angularVelocity = 0f;
         myRigidBody.freezeRotation = true;
         myRigidBody.gravityScale = 0f;
+        if(rotating != null) {
+            rotating.enabled = false;
+        }
     }
 
     void ResumeObject() {
         //myRigidBody.angularVelocity = 0f;
         myRigidBody.freezeRotation = false;
         myRigidBody.gravityScale = originalGravityScale;
+
+        if (rotating != null) {
+            rotating.enabled = true;
+        }
     }
 }

@@ -12,12 +12,18 @@ public class TimeManager : MonoBehaviour
     private float activeTimer;
     private float pausedTimer;
     private bool isPaused;
-    private bool playerLaunched = false;
+    private bool playerLaunched;
 
     private void Start() {
+        StartLevel();
+    }
+
+    public void StartLevel() {
         pausedTimer = 0f;
         activeTimer = 0f;
-        isPaused = true;
+        isPaused = false;
+        playerLaunched = false;
+        ResumeTime();
     }
 
     private void Update() {

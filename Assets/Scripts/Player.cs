@@ -10,17 +10,33 @@ public class Player : MonoBehaviour
 
     Rigidbody2D myRigidBody;
     LineRenderer myLineRenderer;
+    SpriteRenderer mySpriteRenderer;
     
     bool newPress = false;
     bool isPressed = false;
+    bool moveable = true;
     Vector3 pressPosition = Vector2.zero;
     Vector3 releasePosition = Vector2.zero;
     Camera mainCamera;
+    Vector3 startPosition;
+    Color normalColor;
+    Color deathColor;
+    Color winColor;
+    float normalGravityScale;
 
     private void Start() {
+        mainCamera = Camera.main;
+        startPosition = transform.position;
+        
         myRigidBody = GetComponent<Rigidbody2D>();
         myLineRenderer = GetComponent<LineRenderer>();
-        mainCamera = Camera.main;
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+
+        normalGravityScale = myRigidBody.gravityScale;
+
+        normalColor = mySpriteRenderer.color;
+        deathColor = new Color(1f, 0.2f, 0.2f);
+        winColor = new Color(1f, 1f, 1f);
     }
 
     private void Update() {
@@ -33,19 +49,23 @@ public class Player : MonoBehaviour
 
 
     void OnTouchInput(InputValue iv) {
-        print("On touch. Is pressed: " + iv.isPressed);
-        if(iv.isPressed == true) {
-            isPressed = true;
-        } else {
-            isPressed = false;
-            newPress = true;
-            RemoveLine();
-            MovePlayer();
+        if(moveable) {
+            print("On touch. Is pressed: " + iv.isPressed);
+            if (iv.isPressed == true) {
+                isPressed = true;
+            }
+            else {
+                isPressed = false;
+                newPress = true;
+                RemoveLine();
+                MovePlayer();
+            }
         }
+        
     }
 
     void OnTouchPosition(InputValue iv) {
-        if(isPressed) {
+        if(isPressed && moveable) {
             Vector2 touchPos = iv.Get<Vector2>();
             print("On Touch Pos: " + touchPos);
             Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(touchPos.x, touchPos.y, mainCamera.nearClipPlane));
@@ -74,5 +94,50 @@ public class Player : MonoBehaviour
         print("Distance of drag = " + distance);
         myRigidBody.AddForce(distance, ForceMode2D.Impulse);
     }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag != "Podium") {
+            KillPlayer();
+        }
+    }
+
+    void KillPlayer() {
+        moveable = false;
+        mySpriteRenderer.color = deathColor;
+        myRigidBody.velocity = Vector2.zero;
+        myRigidBody.gravityScale = 0f;
+        timeManager.StartLevel();
+        StartCoroutine(Respawn());
+
+    }
+    IEnumerator Respawn() {
+        yield return new WaitForSeconds(0.7f);
+        transform.position = startPosition;
+        transform.rotation = Quaternion.identity;
+        mySpriteRenderer.color = normalColor;
+        myRigidBody.gravityScale = normalGravityScale;
+        moveable = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.tag == "Goal") {
+            HandleGoalReached(other.gameObject.transform.position);
+        }
+    }
+
+    void HandleGoalReached(Vector3 goalPosition) {
+        // For now just restart same level
+        moveable = false;
+        myRigidBody.velocity = Vector2.zero;
+        myRigidBody.gravityScale = 0f;
+        transform.position = goalPosition;
+        mySpriteRenderer.color = winColor;
+        timeManager.StartLevel();
+        StartCoroutine(Respawn());
+    }
+
+    
+
+    
 
 }

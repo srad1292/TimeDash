@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] TimeManager timeManager;
+    [SerializeField] LevelLoader levelLoader;
 
     Rigidbody2D myRigidBody;
     LineRenderer myLineRenderer;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     Color deathColor;
     Color winColor;
     float normalGravityScale;
+    bool collectedToken = false;
 
     private void Start() {
         mainCamera = Camera.main;
@@ -132,12 +134,15 @@ public class Player : MonoBehaviour
         myRigidBody.gravityScale = 0f;
         transform.position = goalPosition;
         mySpriteRenderer.color = winColor;
-        timeManager.StartLevel();
-        StartCoroutine(Respawn());
+        StartCoroutine(BeatLevel());
     }
 
-    
+    IEnumerator BeatLevel() {
+        yield return new WaitForSeconds(0.7f);
+        GameData.Instance.HandleLevelFinished(6000, collectedToken);
+        levelLoader.LoadLevelSelect();
+    }
 
-    
+
 
 }

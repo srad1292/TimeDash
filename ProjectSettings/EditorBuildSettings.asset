@@ -14,5 +14,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GameScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/GameSceneTwo.unity
+    guid: a9affa120e3e76a4ea071fb4996ed872
+  - enabled: 1
+    path: Assets/Scenes/GameSceneThree.unity
+    guid: b1c6c57099e3d7547b0823bc59444622
+  - enabled: 1
+    path: Assets/Scenes/GameSceneFour.unity
+    guid: 8d158f0689b819e40bc6864da8c31216
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2ecc901c778febd44af87d5acb0a8cb3, type: 2}

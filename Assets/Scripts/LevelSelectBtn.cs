@@ -16,28 +16,53 @@ public class LevelSelectBtn : MonoBehaviour
     
     Level level;
 
-    private void Start() {
+    private void Awake() {
         btnImage = GetComponent<Image>();
+    }
+
+    private void Start() {
+        print("Setting up level");
+        level = GameData.Instance.worlds[worldIndex].levels[levelIndex];
+        if(level == null) {
+            print("Woops level is null for: " + worldIndex.ToString() + "-" + levelIndex.ToString());
+        }
+        SetupButtonDisplay();
+    }
+
+    private void SetupButtonDisplay() {
         if(GameData.Instance == null) {
-            Debug.Log("Game Data Not Initialized");
-        } else if(GameData.Instance.worlds[worldIndex - 1] == null) {
-            Debug.Log("World Not Initialized");
+            print("WTF game data is null");
         }
-        else if (GameData.Instance.worlds[worldIndex - 1].levels[levelIndex-1] == null) {
-            Debug.Log("Level Not Initialized");
+        if (level == null) {
+            print("Getting level for: " + worldIndex.ToString() + "-" + levelIndex.ToString());
+            level = GameData.Instance.worlds[worldIndex].levels[levelIndex];
         }
-        level = GameData.Instance.worlds[worldIndex-1].levels[levelIndex-1];
-        btnImage.sprite = level.unlocked ? unlockedImg : lockedImg;
-        btnImage.color = level.unlocked ? unlockedColor : Color.white;
-        btnText.SetText(level.unlocked ? levelIndex.ToString() : "");
+        if(level == null) {
+            print("Level still null????");
+        } else {
+            btnImage.sprite = level.unlocked ? unlockedImg : lockedImg;
+            btnImage.color = level.unlocked ? unlockedColor : Color.white;
+            btnText.SetText(level.unlocked ? levelIndex.ToString() : "");
+        }
+    }
+
+    public void UnlockButton() {
+        SetupButtonDisplay();
     }
 
     public void SelectLevel() {
         if(level.unlocked) {
-            GameData.Instance.SelectLevel(worldIndex - 1, levelIndex - 1);
+            GameData.Instance.SelectLevel(worldIndex, levelIndex);
             levelLoader.LoadGameLevel(level.levelName);
         }
-        
+    }
+
+    public int GetWorldIndex() {
+        return worldIndex;
+    }
+
+    public int GetLevelIndex() {
+        return levelIndex;
     }
 
 }

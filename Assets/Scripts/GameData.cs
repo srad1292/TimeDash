@@ -83,9 +83,10 @@ public class GameData : MonoBehaviour
 
     private void SetUnlocksBasedOnLevel(bool previouslyBeaten) {
         if(!previouslyBeaten) {
-            unlockNextLevel = true;
             if (activeLevelIndex == worlds[activeWorldIndex].levels.Length - 1) {
                 unlockNextWorld = true;
+            } else if(!activeWorld.isBonusWorld) {
+                unlockNextLevel = true;
             }
         }
         

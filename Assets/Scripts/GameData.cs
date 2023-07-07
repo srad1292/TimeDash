@@ -29,7 +29,7 @@ public class GameData : MonoBehaviour
 
     private void InitializeGameData() {
         Level[] world1Levels = new Level[] {
-            new Level("GameScene", true, false, false, false, -1, 4000),
+            new Level("GameScene", true, false, false, false, -1, 40000),
             new Level("GameSceneTwo", false, false, false, false, -1, 4000),
             new Level("GameSceneThree", false, false, false, false, -1, 4000),
             new Level("GameSceneFour", false, false, false, false, -1, 4000),
@@ -66,6 +66,8 @@ public class GameData : MonoBehaviour
         Instance.SetUnlocksBasedOnLevel(prevBeaten);
 
         Instance.activeLevel.SetBestTime(timeToBeat);
+        print("Speed Run Target: " + Instance.activeLevel.speedRunTarget);
+        print("Actual Time: " + timeToBeat);
         if (timeToBeat <= Instance.activeLevel.speedRunTarget) {
             Instance.activeLevel.SpeedRunCompleted();
         }

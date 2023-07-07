@@ -26,6 +26,9 @@ public class Player : MonoBehaviour
     float normalGravityScale;
     bool collectedToken = false;
 
+    bool timerStarted = false;
+    int timeToBeat = 0;
+
     private void Start() {
         mainCamera = Camera.main;
         startPosition = transform.position;
@@ -42,16 +45,24 @@ public class Player : MonoBehaviour
     }
 
     private void Update() {
-        if(isPressed) {
+        if (timerStarted) {
+            timeToBeat += (int)(Time.deltaTime * 1000);
+        }
+
+        if (isPressed) {
             myLineRenderer.positionCount = 2;
             myLineRenderer.SetPosition(0, releasePosition);
             myLineRenderer.SetPosition(1, pressPosition);
         }
+        
     }
 
 
     void OnTouchInput(InputValue iv) {
         if(moveable) {
+            if(!timerStarted) {
+                timerStarted = true;
+            }
             print("On touch. Is pressed: " + iv.isPressed);
             if (iv.isPressed == true) {
                 isPressed = true;
@@ -124,11 +135,15 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.tag == "Goal") {
             HandleGoalReached(other.gameObject.transform.position);
+        } else if(other.gameObject.tag == "ChallengeToken") {
+            collectedToken = true;
+            Destroy(other.gameObject);
         }
     }
 
     void HandleGoalReached(Vector3 goalPosition) {
         // For now just restart same level
+        timerStarted = false;
         moveable = false;
         myRigidBody.velocity = Vector2.zero;
         myRigidBody.gravityScale = 0f;
@@ -139,7 +154,7 @@ public class Player : MonoBehaviour
 
     IEnumerator BeatLevel() {
         yield return new WaitForSeconds(0.7f);
-        GameData.Instance.HandleLevelFinished(6000, collectedToken);
+        GameData.Instance.HandleLevelFinished(timeToBeat, collectedToken);
         levelLoader.LoadLevelSelect();
     }
 

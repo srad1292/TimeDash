@@ -11,6 +11,13 @@ public class LevelSelectBtn : MonoBehaviour
     [SerializeField] Sprite lockedImg;
     [SerializeField] Sprite unlockedImg;
     [SerializeField] Color unlockedColor;
+    [SerializeField] Image beatStar;
+    [SerializeField] Image speedRunStar;
+    [SerializeField] Image challengeTokenStar;
+    [SerializeField] Color unobtainedStarColor;
+    [SerializeField] Color beatStarColor;
+    [SerializeField] Color speedRunStarColor;
+    [SerializeField] Color challengeTokenStarColor;
 
     Image btnImage;
     
@@ -21,33 +28,38 @@ public class LevelSelectBtn : MonoBehaviour
     }
 
     private void Start() {
-        print("Setting up level");
         level = GameData.Instance.worlds[worldIndex].levels[levelIndex];
-        if(level == null) {
-            print("Woops level is null for: " + worldIndex.ToString() + "-" + levelIndex.ToString());
-        }
         SetupButtonDisplay();
+        SetupStarsDisplay();
     }
 
     private void SetupButtonDisplay() {
-        if(GameData.Instance == null) {
-            print("WTF game data is null");
-        }
         if (level == null) {
-            print("Getting level for: " + worldIndex.ToString() + "-" + levelIndex.ToString());
             level = GameData.Instance.worlds[worldIndex].levels[levelIndex];
         }
-        if(level == null) {
-            print("Level still null????");
-        } else {
-            btnImage.sprite = level.unlocked ? unlockedImg : lockedImg;
-            btnImage.color = level.unlocked ? unlockedColor : Color.white;
-            btnText.SetText(level.unlocked ? levelIndex.ToString() : "");
-        }
+        btnImage.sprite = level.unlocked ? unlockedImg : lockedImg;
+        btnImage.color = level.unlocked ? unlockedColor : Color.white;
+        btnText.SetText(level.unlocked ? levelIndex.ToString() : "");
     }
 
     public void UnlockButton() {
         SetupButtonDisplay();
+        SetupStarsDisplay();
+    }
+
+    private void SetupStarsDisplay() {
+        if(!level.unlocked) { return; }
+
+        beatStar.gameObject.SetActive(true);
+        speedRunStar.gameObject.SetActive(true);
+        challengeTokenStar.gameObject.SetActive(true);
+
+        
+        beatStar.color = level.beat ? beatStarColor : unobtainedStarColor;
+        speedRunStar.color = level.speedRun ? speedRunStarColor : unobtainedStarColor;
+        challengeTokenStar.color = level.challengeToken ? challengeTokenStarColor : unobtainedStarColor;
+
+
     }
 
     public void SelectLevel() {

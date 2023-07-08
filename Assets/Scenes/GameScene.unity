@@ -1384,6 +1384,10 @@ PrefabInstance:
       propertyPath: timeManager
       value: 
       objectReference: {fileID: 468306611}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
 --- !u!1001 &8330241125799179572

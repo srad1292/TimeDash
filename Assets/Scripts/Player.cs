@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     LineRenderer myLineRenderer;
     SpriteRenderer mySpriteRenderer;
     
-    bool newPress = false;
+    bool newPress = true;
     bool isPressed = false;
     bool moveable = true;
     Vector3 pressPosition = Vector2.zero;
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
 
     bool timerStarted = false;
     int timeToBeat = 0;
+
 
     private void Start() {
         mainCamera = Camera.main;
@@ -93,8 +94,10 @@ public class Player : MonoBehaviour
             else {
                 releasePosition = worldPos;
             }
+
+
         }
-        
+
     }
 
     void RemoveLine() {

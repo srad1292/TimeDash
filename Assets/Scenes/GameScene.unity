@@ -1419,6 +1419,26 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5588c2a95bee42f4c859606308e39029, type: 2}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0.005153656
+      objectReference: {fileID: 0}
+    - target: {fileID: 7089253703620639319, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd6f7bb39ea922844aafb7e071205a0e, type: 3}
 --- !u!212 &7235844610069726124
